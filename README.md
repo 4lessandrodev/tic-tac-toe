@@ -9,9 +9,9 @@ A logic implementation for a tic tac toe game
 const game = new TicTacToeModel({ currentTurn: 'X' })
 	.fillPosition('A1', 'O').printMatrix()
 	.fillPosition('A2', 'X').printMatrix()
-	.fillPosition('B2', 'O').printMatrix();
-	.fillPosition('B2', 'O').printMatrix();
-	.fillPosition('B2', 'O').printMatrix();
+	.fillPosition('B2', 'O').printMatrix()
+	.fillPosition('B3', 'X').printMatrix()
+	.fillPosition('C3', 'O').printMatrix();
 
 >`
 [O][ ][ ]
