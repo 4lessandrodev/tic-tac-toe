@@ -1,8 +1,20 @@
-# TicTacToe
+# tic-tac-toe
 
 ## Simple rich model - Game
 
 A logic implementation for a tic tac toe game
+
+### Mapped Matrix
+
+Matrix addresses
+
+```ts
+>`
+[A1][B1][C1]
+[A2][B2][C2]
+[A3][B3][C3]
+`
+```
 
 ```ts
 

@@ -135,7 +135,7 @@ export class TicTacToeModel implements ITicTacToeModel {
 			throw new Error("The game is over");
 		}
 
-		if (symbol === this.#CurrentPlayer) {
+		if (symbol !== this.nextPlayer) {
 			throw new Error("Each player takes one turn at a time");
 		}
 
