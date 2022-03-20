@@ -134,6 +134,27 @@ describe('tic-tac-toe.model', () => {
 		expect(game.canPlay()).toBeFalsy();
 	});
 
+	it('should fail if X and O to win', () => {
+		expect.assertions(1);
+		try {
+			new TicTacToeModel({
+				matrix: {
+					A1: 'X',
+					A2: 'X',
+					A3: 'X',
+					B1: 'O',
+					B2: 'O',
+					B3: 'O',
+					C1: ' ',
+					C2: ' ',
+					C3: ' ',
+				}
+			});	
+		} catch (error: any) {
+			expect(error.message).toBe('X and O cannot win');
+		}
+	});
+
 	it('should throw if provide more X than O', () => {
 		expect.assertions(1);
 		try {
@@ -175,5 +196,157 @@ describe('tic-tac-toe.model', () => {
 		} catch (error: any) {
 			expect(error.message).toBe('Invalid matrix values. [X]: 2, [O]: 4. Total Diff +2/1');
 		}
+	});
+
+	it('should position A1, A2, A3 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				A1: 'O',
+				A2: 'O',
+				A3: 'O',
+				C3: 'X',
+				B1: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['A1', 'A2', 'A3']
+		});
+	});
+
+	it('should position A1, B2, C3 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				A1: 'O',
+				B2: 'O',
+				C3: 'O',
+				A3: 'X',
+				B1: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['A1', 'B2', 'C3']
+		});
+	});
+
+	it('should position C1, B2, A3 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				C1: 'O',
+				B2: 'O',
+				A3: 'O',
+				C3: 'X',
+				B1: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['C1', 'B2', 'A3']
+		});
+	});
+
+	it('should position A1, B1, C1 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				A1: 'O',
+				B1: 'O',
+				C1: 'O',
+				C3: 'X',
+				B3: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['A1', 'B1', 'C1']
+		});
+	});
+
+	it('should position A2, B2, C2 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				A2: 'O',
+				B2: 'O',
+				C2: 'O',
+				C3: 'X',
+				B3: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['A2', 'B2', 'C2']
+		});
+	});
+
+	it('should position A3, B3, C3 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				A3: 'O',
+				B3: 'O',
+				C3: 'O',
+				C1: 'X',
+				B1: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['A3','B3','C3']
+		});
+	});
+
+	it('should position B1, B2, B3 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				B1: 'O',
+				B2: 'O',
+				B3: 'O',
+				C1: 'X',
+				A1: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['B1','B2','B3']
+		});
+	});
+
+	it('should position C1, C2, C3 gain the game', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				C1: 'O',
+				C2: 'O',
+				C3: 'O',
+				B1: 'X',
+				A1: 'X'
+			}
+		});
+		game.printMatrix();
+		expect(game.isGameFinished).toBeTruthy();
+		expect(game.getGameResult()).toEqual({
+			oWon: true,
+			xWon: false,
+			positions: ['C1', 'C2', 'C3']
+		});
 	});
 });

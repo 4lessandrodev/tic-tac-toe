@@ -45,7 +45,10 @@ export class TicTacToeModel implements ITicTacToeModel {
 		this.#C1 = props?.matrix?.C1 ?? ' ';
 		this.#C2 = props?.matrix?.C2 ?? ' ';
 		this.#C3 = props?.matrix?.C3 ?? ' ';
+
 		this.#CurrentPlayer = props?.currentTurn ?? this.randomSymbol();
+
+		this.validateWinner();
 	}
 
 	private randomSymbol (): IMarkSymbol {
@@ -57,6 +60,26 @@ export class TicTacToeModel implements ITicTacToeModel {
 		return values.reduce(
 			(total, item) => { if (item === symbol) { return total + 1 } else { return total }}, 0
 		)
+	}
+
+	private validateWinner(): void {
+		
+		const matrix = this.matrix;
+		const result = { x: 0, o: 0 };
+		
+		this.#wonRules.forEach((rules) => {
+			const match = { x: 0, o: 0 };
+			
+			match.x = rules.reduce((total, position) => matrix[position] === 'X' ? total + 1 : total, 0);
+
+			match.o = rules.reduce((total, position) => matrix[position] === 'O' ? total + 1 : total, 0);
+
+			(match.o === 3) ? result.o = 3 : result.o = result.o;
+
+			(match.x === 3) ? result.x = 3 : result.x = result.x;
+		});
+
+		if(result.o === 3 && result.x === 3) throw new Error("X and O cannot win");
 	}
 
 	private validateSymbolDiff(props?: ICreateProps): void {
@@ -93,6 +116,8 @@ export class TicTacToeModel implements ITicTacToeModel {
 
 	getGameResult(): IResult {
 
+		this.validateWinner();
+
 		const matrix = this.getMatrix();
 		
 		const result: IResult = { 
@@ -108,10 +133,6 @@ export class TicTacToeModel implements ITicTacToeModel {
 				if (matrix[rule] === 'X') match.x = match.x + 1;
 				if (matrix[rule] === 'O') match.o = match.o + 1;
 			});
-
-			if (match.o === 3 && match.x === 3) {
-				throw new Error('X and O cannot win');
-			}
 
 			if (match.x === 3) {
 				result.positions.push(...rules);
