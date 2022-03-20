@@ -5,7 +5,8 @@ import {
 	IRules,
 	ISymbol,
 	ITicTacToeModel,
-	IMarkSymbol
+	IMarkSymbol,
+	ICreateProps
 } from "./types/index.interface";
 
 export class TicTacToeModel implements ITicTacToeModel {
@@ -31,12 +32,9 @@ export class TicTacToeModel implements ITicTacToeModel {
 		['C1', 'C2', 'C3']
 	]
 
-	constructor(props?: { matrix?: Partial<IMatrix>, currentTurn?: IMarkSymbol}) {
+	constructor(props?: ICreateProps) {
 
-		const randomSymbol = (): IMarkSymbol => {
-			const isPair = Math.trunc(Math.random() * 100) % 2 === 0;
-			return isPair ? 'O' : 'X';
-		}
+		this.validateSymbolDiff(props);
 
 		this.#A1 = props?.matrix?.A1 ?? ' ';
 		this.#A2 = props?.matrix?.A2 ?? ' ';
@@ -47,7 +45,28 @@ export class TicTacToeModel implements ITicTacToeModel {
 		this.#C1 = props?.matrix?.C1 ?? ' ';
 		this.#C2 = props?.matrix?.C2 ?? ' ';
 		this.#C3 = props?.matrix?.C3 ?? ' ';
-		this.#CurrentPlayer = props?.currentTurn ?? randomSymbol();
+		this.#CurrentPlayer = props?.currentTurn ?? this.randomSymbol();
+	}
+
+	private randomSymbol (): IMarkSymbol {
+		const isPair = Math.trunc(Math.random() * 100) % 2 === 0;
+		return isPair ? 'O' : 'X';
+	}
+
+	private calculateTotalOfSymbol(symbol: IMarkSymbol, values: ISymbol[]): number {
+		return values.reduce(
+			(total, item) => { if (item === symbol) { return total + 1 } else { return total }}, 0
+		)
+	}
+
+	private validateSymbolDiff(props?: ICreateProps): void {
+		const values = Object.values(props?.matrix ?? {});
+		const totalX = this.calculateTotalOfSymbol('X', values);
+		const totalO = this.calculateTotalOfSymbol('O', values);
+
+		const diff = ((totalO - totalX) * Math.sign(totalO - totalX));
+
+		if (diff >= 2) throw new Error(`Invalid matrix values. [X]: ${totalX}, [O]: ${totalO}. Total Diff +${diff}/1`);
 	}
 
 	get matrix(): IMatrix {
@@ -108,8 +127,12 @@ export class TicTacToeModel implements ITicTacToeModel {
 		return result;
 	}
 
+	hasEmptyPosition(): boolean {
+		 return Object.values(this.matrix).includes(' ');
+	}
+
 	get isGameFinished(): boolean {
-		return !this.canPlay();
+		return !this.canPlay()
 	}
 
 	get currentPlayer(): IMarkSymbol {
@@ -126,7 +149,7 @@ export class TicTacToeModel implements ITicTacToeModel {
 
 	canPlay(): boolean {
 		const gameResult = this.getGameResult();
-		return !gameResult.oWon && !gameResult.xWon;
+		return !gameResult.oWon && !gameResult.xWon && this.hasEmptyPosition();
 	}
 
 	fillPosition(position: IPosition, symbol: IMarkSymbol): ITicTacToeModel {

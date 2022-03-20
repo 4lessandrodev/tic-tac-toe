@@ -113,5 +113,67 @@ describe('tic-tac-toe.model', () => {
 		console.log(game.getGameResult());
 		
 		expect(game.isGameFinished).toBeTruthy();
-	})
+	});
+
+	it('should the game is over', () => {
+		const game = new TicTacToeModel({
+			matrix: {
+				A1: 'X',
+				A2: 'O',
+				A3: 'X',
+				B1: 'O',
+				B2: 'X',
+				B3: 'O',
+				C1: 'X',
+				C2: 'O',
+				C3: 'X',
+			}
+		});
+
+		expect(game.hasEmptyPosition()).toBeFalsy();
+		expect(game.canPlay()).toBeFalsy();
+	});
+
+	it('should throw if provide more X than O', () => {
+		expect.assertions(1);
+		try {
+			new TicTacToeModel({
+				matrix: {
+					A1: 'X',
+					A2: 'X',
+					A3: 'X',
+					B1: 'O',
+					B2: 'X',
+					B3: 'O',
+					C1: ' ',
+					C2: ' ',
+					C3: ' ',
+				}
+			});	
+		} catch (error: any) {
+			expect(error.message).toBe('Invalid matrix values. [X]: 4, [O]: 2. Total Diff +2/1');
+		}
+	});
+
+	it('should throw if provide more O than X', () => {
+		expect.assertions(1);
+		try {
+			new TicTacToeModel({
+				matrix: {
+					A1: 'X',
+					A2: 'X',
+					A3: 'O',
+					B1: 'O',
+					B2: 'O',
+					B3: 'O',
+					C1: ' ',
+					C2: ' ',
+					C3: ' ',
+				}
+			});
+		
+		} catch (error: any) {
+			expect(error.message).toBe('Invalid matrix values. [X]: 2, [O]: 4. Total Diff +2/1');
+		}
+	});
 });

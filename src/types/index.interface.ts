@@ -2,6 +2,10 @@ export type ISymbol = 'X' | 'O' | ' ';
 
 export type IMarkSymbol = 'X' | 'O';
 
+export interface ICreateProps {
+	matrix?: Partial<IMatrix>,
+	currentTurn?: IMarkSymbol
+};
 export interface IMatrix {
 	A1: ISymbol;
 	A2: ISymbol;
@@ -28,6 +32,7 @@ export interface ITicTacToeModel {
 	matrix: IMatrix;
 	rules: IRules;
 	isGameFinished: boolean;
+	hasEmptyPosition(): boolean;
 	/**
 	 * @property xWon: boolean;
 	 * @property oWon: boolean;
