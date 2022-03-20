@@ -33,7 +33,7 @@ export class TicTacToeModel implements ITicTacToeModel {
 
 	constructor(props?: { matrix?: Partial<IMatrix>, currentTurn?: IMarkSymbol}) {
 
-		const randomNext = (): IMarkSymbol => {
+		const randomSymbol = (): IMarkSymbol => {
 			const isPair = Math.trunc(Math.random() * 100) % 2 === 0;
 			return isPair ? 'O' : 'X';
 		}
@@ -47,7 +47,7 @@ export class TicTacToeModel implements ITicTacToeModel {
 		this.#C1 = props?.matrix?.C1 ?? ' ';
 		this.#C2 = props?.matrix?.C2 ?? ' ';
 		this.#C3 = props?.matrix?.C3 ?? ' ';
-		this.#CurrentPlayer = props?.currentTurn ?? randomNext();
+		this.#CurrentPlayer = props?.currentTurn ?? randomSymbol();
 	}
 
 	get matrix(): IMatrix {
@@ -112,8 +112,12 @@ export class TicTacToeModel implements ITicTacToeModel {
 		return !this.canPlay();
 	}
 
-	get nextPlayer(): IMarkSymbol {
+	get currentPlayer(): IMarkSymbol {
 		return this.#CurrentPlayer;
+	};
+
+	get nextPlayer(): IMarkSymbol {
+		return this.getNextSymbolTurn();
 	};
 
 	getNextSymbolTurn(): IMarkSymbol {
@@ -125,7 +129,7 @@ export class TicTacToeModel implements ITicTacToeModel {
 		return !gameResult.oWon && !gameResult.xWon;
 	}
 
-	fillPosition(position: IPosition, symbol: IMarkSymbol): TicTacToeModel {
+	fillPosition(position: IPosition, symbol: IMarkSymbol): ITicTacToeModel {
 
 		if (this.isGameFinished) {
 			throw new Error("The game is over");

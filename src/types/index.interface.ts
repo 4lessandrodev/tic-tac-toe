@@ -44,6 +44,7 @@ export interface ITicTacToeModel {
 	fillPosition(position: IPosition, symbol: IMarkSymbol): ITicTacToeModel;
 	isEmptyPosition(position: IPosition): boolean;
 	printMatrix(): ITicTacToeModel;
+	currentPlayer: IMarkSymbol;
 	nextPlayer: IMarkSymbol;
 	getNextSymbolTurn(): IMarkSymbol;
 }
